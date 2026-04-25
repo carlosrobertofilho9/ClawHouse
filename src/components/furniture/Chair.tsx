@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type ChairColor = "slate" | "gray" | "zinc" | "neutral" | "stone";
 
-interface ChairProps {
-  className?: string;
+interface ChairProps extends FurnitureComponentProps {
   color?: ChairColor;
   size?: "sm" | "md";
 }
@@ -18,7 +18,7 @@ const colorMap: Record<ChairColor, string> = {
   stone: "bg-stone-600",
 };
 
-export default function Chair({ className, color = "slate", size = "md" }: ChairProps) {
+export default function Chair({ className, placement, color = "slate", size = "md" }: ChairProps) {
   const sizeClass = size === "sm" ? "w-5 h-5" : "w-6 h-6";
-  return <div className={cn(sizeClass, colorMap[color], "rounded-full", className)} />;
+  return <FurnitureBase placement={placement} className={cn(sizeClass, colorMap[color], "rounded-full", className)} />;
 }

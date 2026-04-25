@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type DeskColor = "violet" | "amber" | "slate" | "zinc";
 
-interface DeskProps {
-  className?: string;
+interface DeskProps extends FurnitureComponentProps {
   color?: DeskColor;
   width?: string;
   height?: string;
@@ -22,6 +22,7 @@ const colorMap: Record<DeskColor, { bg: string; border: string; book: string }> 
 
 export default function Desk({
   className,
+  placement,
   color = "violet",
   width = "w-20",
   height = "h-12",
@@ -31,13 +32,13 @@ export default function Desk({
   const colors = colorMap[color];
 
   return (
-    <div className={cn(width, height, colors.bg, "rounded-lg border-2", colors.border, "shadow-sm", className)}>
+    <FurnitureBase placement={placement} className={cn(width, height, colors.bg, "rounded-lg border-2", colors.border, "shadow-sm", className)}>
       {hasMonitor && (
         <div className="absolute top-1 left-1/2 -translate-x-1/2 w-10 h-6 bg-slate-700 rounded border border-slate-500" />
       )}
       {hasBook && (
         <div className={cn("absolute bottom-1 right-2 w-6 h-4 rounded-sm", colors.book)} />
       )}
-    </div>
+    </FurnitureBase>
   );
 }

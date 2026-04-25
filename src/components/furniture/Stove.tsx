@@ -1,16 +1,16 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
-interface StoveProps {
-  className?: string;
+interface StoveProps extends FurnitureComponentProps {
   width?: string;
   burners?: number;
 }
 
-export default function Stove({ className, width = "w-14", burners = 4 }: StoveProps) {
+export default function Stove({ className, placement, width = "w-14", burners = 4 }: StoveProps) {
   return (
-    <div className={cn(width, "h-12 bg-slate-700 rounded-lg border-2 border-slate-800", className)}>
+    <FurnitureBase placement={placement} className={cn(width, "h-12 bg-slate-700 rounded-lg border-2 border-slate-800", className)}>
       {[...Array(Math.min(burners, 4))].map((_, i) => {
         const positions = [
           "top-1 left-1",
@@ -25,6 +25,6 @@ export default function Stove({ className, width = "w-14", burners = 4 }: StoveP
           />
         );
       })}
-    </div>
+    </FurnitureBase>
   );
 }

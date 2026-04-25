@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type DoorColor = "amber" | "stone" | "orange" | "neutral";
 
-interface DoorProps {
-  className?: string;
+interface DoorProps extends FurnitureComponentProps {
   color?: DoorColor;
   width?: string;
 }
@@ -17,6 +17,6 @@ const colorMap: Record<DoorColor, string> = {
   neutral: "bg-neutral-700",
 };
 
-export default function Door({ className, color = "amber", width = "w-12" }: DoorProps) {
-  return <div className={cn(width, "h-2", colorMap[color], "rounded-b", className)} />;
+export default function Door({ className, placement, color = "amber", width = "w-12" }: DoorProps) {
+  return <FurnitureBase placement={placement} className={cn(width, "h-2", colorMap[color], "rounded-b", className)} />;
 }

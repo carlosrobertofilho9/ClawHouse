@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type FlaskColor = "sky" | "green" | "rose" | "yellow" | "purple";
 
-interface LabTableProps {
-  className?: string;
+interface LabTableProps extends FurnitureComponentProps {
   color?: "violet" | "purple" | "indigo";
   width?: string;
   flasks?: FlaskColor[];
@@ -27,6 +27,7 @@ const flaskMap: Record<FlaskColor, { bg: string; border: string }> = {
 
 export default function LabTable({
   className,
+  placement,
   color = "violet",
   width = "w-20",
   flasks = ["sky", "green"],
@@ -34,7 +35,7 @@ export default function LabTable({
   const t = tableColorMap[color];
 
   return (
-    <div className={cn(width, "h-10", t.bg, "rounded-lg border-2", t.border, className)}>
+    <FurnitureBase placement={placement} className={cn(width, "h-10", t.bg, "rounded-lg border-2", t.border, className)}>
       {flasks.map((flask, i) => {
         const f = flaskMap[flask];
         const position = i === 0 ? "left-2" : i === 1 ? "right-3" : "left-1/2 -translate-x-1/2";
@@ -47,6 +48,6 @@ export default function LabTable({
         );
       })}
       <div className={cn("absolute bottom-1 left-1/2 -translate-x-1/2 w-10 h-1 rounded", t.detail)} />
-    </div>
+    </FurnitureBase>
   );
 }

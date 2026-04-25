@@ -7,11 +7,11 @@ export default function OfficeRoom(props: Omit<RoomBaseProps, "id" | "name" | "e
   return (
     <RoomBase {...props} id="escritorio" name="Escritório" emoji="💻">
       <div className="relative w-full h-full">
-        <Desk className="absolute top-2 left-2" />
-        <Chair className="absolute top-14 left-8" color="slate" />
-        <Bookshelf className="absolute top-2 right-2" color="amber" shelves={5} pattern="mixed" />
-        <Plant className="absolute bottom-2 left-2" size="md" leafColor="emerald" flower="yellow" />
-        <Rug className="absolute bottom-2 right-8" color="rose" width="w-16" height="h-10" />
+        <Desk placement={{ top: 8, left: 8 }} />
+        <Chair placement={{ top: 56, left: 32 }} color="slate" />
+        <Bookshelf placement={{ top: 8, right: 8 }} color="amber" shelves={5} pattern="mixed" />
+        <Plant placement={{ bottom: 8, left: 8 }} size="md" leafColor="emerald" flower="yellow" />
+        <Rug placement={{ bottom: 8, right: 32 }} color="rose" width="w-16" height="h-10" />
       </div>
     </RoomBase>
   );

@@ -7,11 +7,20 @@ export default function EntranceRoom(props: Omit<RoomBaseProps, "id" | "name" | 
   return (
     <RoomBase {...props} id="entrada" name="Entrada" emoji="🏠">
       <div className="relative w-full h-full">
-        <Door className="absolute top-0 left-1/2 -translate-x-1/2" />
-        <Rug className="absolute top-8 left-1/2 -translate-x-1/2" color="rose" width="w-28" height="h-16" opacity={0.5} />
-        <ConsoleTable className="absolute bottom-2 left-1/2 -translate-x-1/2" items={["frame", "vase-red"]} />
-        <Plant className="absolute top-4 left-2" size="sm" leafColor="green" rotation={-5} />
-        <Plant className="absolute top-4 right-2" size="sm" leafColor="teal" flower="pink" rotation={5} />
+        <Door placement={{ top: 0, left: "50%", anchor: "top-center", flushToWall: "top" }} />
+        <Rug
+          placement={{ top: 32, left: "50%", anchor: "top-center" }}
+          color="rose"
+          width="w-28"
+          height="h-16"
+          opacity={0.5}
+        />
+        <ConsoleTable
+          placement={{ bottom: 8, left: "50%", anchor: "bottom-center" }}
+          items={["frame", "vase-red"]}
+        />
+        <Plant placement={{ top: 16, left: 8 }} size="sm" leafColor="green" rotation={-5} />
+        <Plant placement={{ top: 16, right: 8 }} size="sm" leafColor="teal" flower="pink" rotation={5} />
       </div>
     </RoomBase>
   );

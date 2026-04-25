@@ -8,19 +8,19 @@ export default function LabRoom(props: Omit<RoomBaseProps, "id" | "name" | "emoj
     <RoomBase {...props} id="laboratorio" name="Laboratório" emoji="🔬">
       <div className="relative w-full h-full">
         <LabTable
-          className="absolute top-4 left-2"
+          placement={{ top: 16, left: 8 }}
           color="violet"
           width="w-20"
           flasks={["sky", "green"]}
         />
         <LabTable
-          className="absolute top-4 right-2"
+          placement={{ top: 16, right: 8 }}
           color="purple"
           width="w-16"
           flasks={["rose", "yellow"]}
         />
-        <Whiteboard className="absolute bottom-2 left-1/2 -translate-x-1/2" chartType="bars" />
-        <Microscope className="absolute bottom-16 right-4" color="slate" />
+        <Whiteboard placement={{ bottom: 8, left: "50%", anchor: "bottom-center" }} chartType="bars" />
+        <Microscope placement={{ top: 22, right: 26 }} />
       </div>
     </RoomBase>
   );

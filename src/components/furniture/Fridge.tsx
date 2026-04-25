@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type FridgeColor = "gray" | "white" | "slate";
 
-interface FridgeProps {
-  className?: string;
+interface FridgeProps extends FurnitureComponentProps {
   color?: FridgeColor;
   height?: string;
 }
@@ -16,12 +16,12 @@ const colorMap: Record<FridgeColor, { bg: string; border: string; handle: string
   slate: { bg: "bg-slate-200", border: "border-slate-300", handle: "bg-slate-400" },
 };
 
-export default function Fridge({ className, color = "gray", height = "h-20" }: FridgeProps) {
+export default function Fridge({ className, placement, color = "gray", height = "h-20" }: FridgeProps) {
   const c = colorMap[color];
   return (
-    <div className={cn("w-10", height, c.bg, "rounded-lg border-2", c.border, className)}>
+    <FurnitureBase placement={placement} className={cn("w-10", height, c.bg, "rounded-lg border-2", c.border, className)}>
       <div className={cn("absolute top-2 left-1/2 -translate-x-1/2 w-6 h-1 rounded", c.handle)} />
       <div className={cn("absolute top-4 left-1/2 -translate-x-1/2 w-6 h-1 rounded", c.handle)} />
-    </div>
+    </FurnitureBase>
   );
 }

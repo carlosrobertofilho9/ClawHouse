@@ -1,13 +1,13 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type PlantSize = "sm" | "md" | "lg";
 export type LeafColor = "green" | "emerald" | "teal" | "lime" | "dark-green";
 export type FlowerColor = "red" | "pink" | "yellow" | "white" | "purple" | "none";
 
-interface PlantProps {
-  className?: string;
+interface PlantProps extends FurnitureComponentProps {
   size?: PlantSize;
   leafColor?: LeafColor;
   flower?: FlowerColor;
@@ -38,6 +38,7 @@ const sizes = {
 
 export default function Plant({
   className,
+  placement,
   size = "md",
   leafColor = "green",
   flower = "none",
@@ -48,9 +49,10 @@ export default function Plant({
   const hasFlower = flower !== "none";
 
   return (
-    <div
-      className={cn("relative flex flex-col items-center", className)}
-      style={rotation !== 0 ? { transform: `rotate(${rotation}deg)` } : undefined}
+    <FurnitureBase
+      placement={placement}
+      rotation={rotation}
+      className={cn("flex flex-col items-center", className)}
     >
       {/* Leaves */}
       <div className="relative">
@@ -78,6 +80,6 @@ export default function Plant({
       </div>
       {/* Pot */}
       <div className={cn(s.pot, "bg-amber-800 rounded-b-md rounded-t-sm -mt-1 border border-amber-900")} />
-    </div>
+    </FurnitureBase>
   );
 }

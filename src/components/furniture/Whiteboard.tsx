@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type ChartType = "bars" | "line" | "none";
 
-interface WhiteboardProps {
-  className?: string;
+interface WhiteboardProps extends FurnitureComponentProps {
   width?: string;
   height?: string;
   lines?: number;
@@ -14,6 +14,7 @@ interface WhiteboardProps {
 
 export default function Whiteboard({
   className,
+  placement,
   width = "w-20",
   height = "h-12",
   lines = 3,
@@ -22,7 +23,7 @@ export default function Whiteboard({
   const lineWidths = ["w-full", "w-3/4", "w-1/2", "w-2/3", "w-5/6"];
 
   return (
-    <div className={cn(width, height, "bg-white rounded-lg border-2 border-gray-300", className)}>
+    <FurnitureBase placement={placement} className={cn(width, height, "bg-white rounded-lg border-2 border-gray-300", className)}>
       {[...Array(lines)].map((_, i) => (
         <div
           key={i}
@@ -50,6 +51,6 @@ export default function Whiteboard({
           </svg>
         </div>
       )}
-    </div>
+    </FurnitureBase>
   );
 }

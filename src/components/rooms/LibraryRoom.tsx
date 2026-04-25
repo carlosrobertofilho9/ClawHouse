@@ -8,23 +8,25 @@ export default function LibraryRoom(props: Omit<RoomBaseProps, "id" | "name" | "
     <RoomBase {...props} id="biblioteca" name="Biblioteca" emoji="📚">
       <div className="relative w-full h-full">
         <Bookshelf
-          className="absolute top-0 left-0 h-full"
+          placement={{ top: 0, left: 0 }}
           color="brown"
           width="w-10"
+          height="h-full"
           shelves={6}
           pattern="warm"
           side="left"
         />
         <Bookshelf
-          className="absolute top-0 right-0 h-full"
+          placement={{ top: 0, right: 0 }}
           color="brown"
           width="w-10"
+          height="h-full"
           shelves={6}
           pattern="cool"
           side="right"
         />
-        <ReadingTable className="absolute bottom-4 left-1/2 -translate-x-1/2" />
-        <Lamp className="absolute top-2 left-1/2 -translate-x-1/2" color="yellow" />
+        <ReadingTable placement={{ bottom: 16, left: "50%", anchor: "bottom-center" }} />
+        <Lamp placement={{ top: 8, left: "50%", anchor: "top-center" }} color="yellow" />
       </div>
     </RoomBase>
   );

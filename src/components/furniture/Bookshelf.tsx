@@ -1,12 +1,12 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type BookshelfColor = "amber" | "brown" | "dark-amber";
 export type BookPattern = "mixed" | "warm" | "cool" | "neutral";
 
-interface BookshelfProps {
-  className?: string;
+interface BookshelfProps extends FurnitureComponentProps {
   color?: BookshelfColor;
   width?: string;
   height?: string;
@@ -30,6 +30,7 @@ const bookPatterns: Record<BookPattern, string[]> = {
 
 export default function Bookshelf({
   className,
+  placement,
   color = "amber",
   width = "w-10",
   height = "h-24",
@@ -40,11 +41,13 @@ export default function Bookshelf({
   const colors = colorMap[color];
   const books = bookPatterns[pattern];
 
-  const borderSide = side === "left" ? "border-r-2" : side === "right" ? "border-l-2" : "";
-  const extraBorder = side === "center" ? "" : cn(borderSide, colors.border);
+  const borderClass =
+    side === "center"
+      ? cn("border-2", colors.border)
+      : cn(side === "left" ? "border-r-2" : "border-l-2", colors.border);
 
   return (
-    <div className={cn(width, height, colors.bg, "rounded-md border-2", colors.border, extraBorder, className)}>
+    <FurnitureBase placement={placement} className={cn(width, height, colors.bg, "rounded-md", borderClass, className)}>
       <div className="mt-1 mx-0.5 space-y-0.5">
         {[...Array(shelves)].map((_, i) => {
           const widths = [75, 60, 85, 70, 65, 50, 90, 80];
@@ -54,6 +57,6 @@ export default function Bookshelf({
           );
         })}
       </div>
-    </div>
+    </FurnitureBase>
   );
 }

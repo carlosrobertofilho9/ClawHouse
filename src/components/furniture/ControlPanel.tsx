@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type PanelPattern = "alternating" | "every-third" | "random";
 
-interface ControlPanelProps {
-  className?: string;
+interface ControlPanelProps extends FurnitureComponentProps {
   width?: string;
   pattern?: PanelPattern;
 }
@@ -19,16 +19,16 @@ const patternMap: Record<PanelPattern, (i: number) => string> = {
   },
 };
 
-export default function ControlPanel({ className, width = "w-16", pattern = "alternating" }: ControlPanelProps) {
+export default function ControlPanel({ className, placement, width = "w-16", pattern = "alternating" }: ControlPanelProps) {
   const getColor = patternMap[pattern];
 
   return (
-    <div className={cn(width, "h-10 bg-slate-800 rounded-lg border-2 border-slate-600", className)}>
+    <FurnitureBase placement={placement} className={cn(width, "h-10 bg-slate-800 rounded-lg border-2 border-slate-600", className)}>
       <div className="grid grid-cols-3 gap-1 p-1">
         {[...Array(6)].map((_, i) => (
           <div key={i} className={cn("w-3 h-2 rounded-sm", getColor(i))} />
         ))}
       </div>
-    </div>
+    </FurnitureBase>
   );
 }

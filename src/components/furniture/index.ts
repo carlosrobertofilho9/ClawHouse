@@ -1,3 +1,11 @@
+export { default as FurnitureBase } from "./FurnitureBase";
+export type {
+  FurnitureAnchor,
+  FurnitureComponentProps,
+  FurniturePlacement,
+  FurnitureWallSide,
+} from "./FurnitureBase";
+
 export { default as Plant } from "./Plant";
 export type { PlantSize, LeafColor, FlowerColor } from "./Plant";
 

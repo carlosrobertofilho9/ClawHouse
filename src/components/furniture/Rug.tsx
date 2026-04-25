@@ -1,12 +1,12 @@
 "use client";
 
 import { cn } from "@/src/lib/utils";
+import FurnitureBase, { type FurnitureComponentProps } from "./FurnitureBase";
 
 export type RugColor = "rose" | "blue" | "amber" | "green" | "purple" | "slate";
 export type RugShape = "rounded" | "pill";
 
-interface RugProps {
-  className?: string;
+interface RugProps extends FurnitureComponentProps {
   color?: RugColor;
   shape?: RugShape;
   width?: string;
@@ -25,6 +25,7 @@ const colorMap: Record<RugColor, { bg: string; border: string }> = {
 
 export default function Rug({
   className,
+  placement,
   color = "rose",
   shape = "rounded",
   width = "w-16",
@@ -35,7 +36,8 @@ export default function Rug({
   const shapeClass = shape === "pill" ? "rounded-full" : "rounded-lg";
 
   return (
-    <div
+    <FurnitureBase
+      placement={placement}
       className={cn(width, height, colors.bg, shapeClass, "border-2 border-dashed", colors.border, className)}
       style={{ opacity }}
     />
