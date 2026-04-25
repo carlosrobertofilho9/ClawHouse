@@ -36,13 +36,13 @@ function generateNarrative(state: AvatarState, event: ActivityEvent | null, room
   }
 }
 
-const stateConfig: Record<AvatarState, { color: string; bg: string; emoji: string }> = {
-  idle: { color: "text-gray-600", bg: "bg-gray-100", emoji: "😴" },
-  thinking: { color: "text-blue-600", bg: "bg-blue-50", emoji: "🤔" },
-  working: { color: "text-yellow-600", bg: "bg-yellow-50", emoji: "⚡" },
-  excited: { color: "text-green-600", bg: "bg-green-50", emoji: "🎉" },
-  tired: { color: "text-red-600", bg: "bg-red-50", emoji: "😓" },
-  reading: { color: "text-purple-600", bg: "bg-purple-50", emoji: "📖" },
+const stateConfig: Record<AvatarState, { color: string; bg: string; border: string; emoji: string }> = {
+  idle: { color: "text-gray-300", bg: "bg-gray-900/60", border: "border-gray-700", emoji: "😴" },
+  thinking: { color: "text-blue-300", bg: "bg-blue-900/40", border: "border-blue-800", emoji: "🤔" },
+  working: { color: "text-yellow-300", bg: "bg-yellow-900/40", border: "border-yellow-800", emoji: "⚡" },
+  excited: { color: "text-green-300", bg: "bg-green-900/40", border: "border-green-800", emoji: "🎉" },
+  tired: { color: "text-red-300", bg: "bg-red-900/40", border: "border-red-800", emoji: "😓" },
+  reading: { color: "text-purple-300", bg: "bg-purple-900/40", border: "border-purple-800", emoji: "📖" },
 };
 
 export default function NarrationBar({ avatarState, currentEvent, currentRoom, className }: NarrationBarProps) {
@@ -52,13 +52,13 @@ export default function NarrationBar({ avatarState, currentEvent, currentRoom, c
   return (
     <div
       className={cn(
-        "flex items-center justify-center gap-3 px-6 py-3 rounded-xl border transition-all duration-500",
+        "flex items-center justify-center gap-3 px-6 py-2.5 rounded-lg border transition-all duration-500 backdrop-blur-sm",
         config.bg,
-        "border-neutral-200",
+        config.border,
         className
       )}
     >
-      <span className="text-xl animate-pulse">{config.emoji}</span>
+      <span className="text-lg animate-pulse">{config.emoji}</span>
       <p className={cn("text-sm font-medium", config.color)}>
         {narrative}
       </p>

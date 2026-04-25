@@ -1,6 +1,6 @@
 "use client";
 
-import { Brain, Wrench, Send, AlertCircle, Clock, Activity, FileEdit, Search, Heart, PlayCircle } from "lucide-react";
+import { Brain, Wrench, Send, AlertCircle, Clock, Activity, FileEdit, Search, Heart, PlayCircle, BookOpen } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { Badge } from "@/src/components/ui/badge";
 import { ScrollArea } from "@/src/components/ui/scroll-area";
@@ -20,7 +20,7 @@ const kindConfig: Record<
   tool_call: { icon: <Wrench className="w-4 h-4" />, label: "Ferramenta", variant: "toolcall" },
   web_search: { icon: <Search className="w-4 h-4" />, label: "Busca", variant: "toolcall" },
   file_edit: { icon: <FileEdit className="w-4 h-4" />, label: "Edição", variant: "toolcall" },
-  file_read: { icon: <FileEdit className="w-4 h-4" />, label: "Leitura", variant: "toolcall" },
+  file_read: { icon: <BookOpen className="w-4 h-4" />, label: "Leitura", variant: "toolcall" },
   message_sent: { icon: <Send className="w-4 h-4" />, label: "Mensagem", variant: "messagesent" },
   error: { icon: <AlertCircle className="w-4 h-4" />, label: "Erro", variant: "error" },
   idle: { icon: <Clock className="w-4 h-4" />, label: "Idle", variant: "idle" },
@@ -59,16 +59,16 @@ export default function ActivityTimeline({ events, maxItems = 10, showAll = fals
   const displayEvents = showAll ? events : events.slice(0, maxItems);
 
   return (
-    <div className="bg-white rounded-xl border border-neutral-200 shadow-sm h-full flex flex-col">
-      <div className="p-4 border-b border-neutral-100 flex items-center gap-2">
-        <Activity className="w-5 h-5 text-neutral-600" />
-        <h2 className="font-semibold text-neutral-800">Activity Timeline</h2>
-        <span className="text-xs text-neutral-400 ml-auto">{events.length} eventos</span>
+    <div className="bg-[#1a1a2e] rounded-xl border border-neutral-800 shadow-sm h-full flex flex-col">
+      <div className="p-4 border-b border-neutral-800 flex items-center gap-2">
+        <Activity className="w-5 h-5 text-neutral-400" />
+        <h2 className="font-semibold text-neutral-200">Activity Timeline</h2>
+        <span className="text-xs text-neutral-500 ml-auto">{events.length} eventos</span>
       </div>
       <ScrollArea className="flex-1">
         <div className="p-3 space-y-2">
           {displayEvents.length === 0 ? (
-            <div className="text-center py-8 text-neutral-400 text-sm">
+            <div className="text-center py-8 text-neutral-500 text-sm">
               Nenhum evento ainda
             </div>
           ) : (
@@ -82,21 +82,22 @@ export default function ActivityTimeline({ events, maxItems = 10, showAll = fals
               return (
                 <div
                   key={`${event.timestamp}-${index}`}
-                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-neutral-50 transition-colors"
+                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-neutral-800/50 transition-colors"
                 >
                   <div
                     className={cn(
                       "flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center",
-                      kind === "thinking" && "bg-blue-100 text-blue-600",
-                      kind === "tool_call" && "bg-yellow-100 text-yellow-600",
-                      kind === "web_search" && "bg-yellow-100 text-yellow-600",
-                      kind === "file_edit" && "bg-yellow-100 text-yellow-600",
-                      kind === "message_sent" && "bg-green-100 text-green-600",
-                      kind === "error" && "bg-red-100 text-red-600",
-                      kind === "idle" && "bg-gray-100 text-gray-600",
-                      kind === "session_start" && "bg-neutral-100 text-neutral-600",
-                      kind === "session_end" && "bg-gray-100 text-gray-600",
-                      kind === "heartbeat" && "bg-neutral-100 text-neutral-600"
+                      kind === "thinking" && "bg-blue-900/50 text-blue-400",
+                      kind === "tool_call" && "bg-yellow-900/50 text-yellow-400",
+                      kind === "web_search" && "bg-yellow-900/50 text-yellow-400",
+                      kind === "file_edit" && "bg-yellow-900/50 text-yellow-400",
+                      kind === "file_read" && "bg-yellow-900/50 text-yellow-400",
+                      kind === "message_sent" && "bg-green-900/50 text-green-400",
+                      kind === "error" && "bg-red-900/50 text-red-400",
+                      kind === "idle" && "bg-gray-900/50 text-gray-400",
+                      kind === "session_start" && "bg-neutral-800 text-neutral-400",
+                      kind === "session_end" && "bg-gray-900/50 text-gray-400",
+                      kind === "heartbeat" && "bg-neutral-800 text-neutral-400"
                     )}
                   >
                     {config.icon}
@@ -106,14 +107,14 @@ export default function ActivityTimeline({ events, maxItems = 10, showAll = fals
                       <Badge variant={config.variant} className="text-[10px] px-1.5 py-0">
                         {config.label}
                       </Badge>
-                      <span className="text-[10px] text-neutral-400 capitalize">
+                      <span className="text-[10px] text-neutral-500 capitalize">
                         {roomLabel}
                       </span>
                     </div>
-                    <p className="text-sm text-neutral-700 leading-snug">
+                    <p className="text-sm text-neutral-300 leading-snug">
                       {event.narrative}
                     </p>
-                    <span className="text-[10px] text-neutral-400 mt-1 block">
+                    <span className="text-[10px] text-neutral-500 mt-1 block">
                       {getRelativeTime(event.timestamp)}
                     </span>
                   </div>

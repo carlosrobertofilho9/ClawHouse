@@ -1,10 +1,17 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/src/lib/utils";
 import type { Room } from "@/src/lib/mocks";
 import { AvatarState } from "@/src/hooks/useAgentActivity";
 import { ActivityEvent } from "@/src/lib/mocks";
-import Avatar from "./Avatar";
+import ClawCharacter from "./ClawCharacter";
+import OfficeRoom from "./rooms/OfficeRoom";
+import EntranceRoom from "./rooms/EntranceRoom";
+import LibraryRoom from "./rooms/LibraryRoom";
+import KitchenRoom from "./rooms/KitchenRoom";
+import ControlRoom from "./rooms/ControlRoom";
+import LabRoom from "./rooms/LabRoom";
 
 interface HouseProps {
   currentRoom: string;
@@ -15,80 +22,6 @@ interface HouseProps {
   onRoomChange?: (room: Room) => void;
 }
 
-interface RoomConfig {
-  id: Room;
-  name: string;
-  emoji: string;
-  col: number;
-  row: number;
-  bgColor: string;
-  hoverColor: string;
-  ringColor: string;
-}
-
-const rooms: RoomConfig[] = [
-  {
-    id: "escritorio",
-    name: "Escritório",
-    emoji: "💻",
-    col: 1,
-    row: 1,
-    bgColor: "bg-office",
-    hoverColor: "hover:bg-blue-200",
-    ringColor: "ring-blue-400",
-  },
-  {
-    id: "entrada",
-    name: "Entrada",
-    emoji: "🏠",
-    col: 2,
-    row: 1,
-    bgColor: "bg-entrance",
-    hoverColor: "hover:bg-gray-200",
-    ringColor: "ring-orange-400",
-  },
-  {
-    id: "biblioteca",
-    name: "Biblioteca",
-    emoji: "📚",
-    col: 3,
-    row: 1,
-    bgColor: "bg-library",
-    hoverColor: "hover:bg-yellow-200",
-    ringColor: "ring-yellow-400",
-  },
-  {
-    id: "cozinha",
-    name: "Cozinha",
-    emoji: "🍳",
-    col: 1,
-    row: 2,
-    bgColor: "bg-kitchen",
-    hoverColor: "hover:bg-green-200",
-    ringColor: "ring-green-400",
-  },
-  {
-    id: "sala_de_controle",
-    name: "Sala de Controle",
-    emoji: "🎛️",
-    col: 2,
-    row: 2,
-    bgColor: "bg-control",
-    hoverColor: "hover:bg-red-200",
-    ringColor: "ring-red-400",
-  },
-  {
-    id: "laboratorio",
-    name: "Laboratório",
-    emoji: "🔬",
-    col: 3,
-    row: 2,
-    bgColor: "bg-lab",
-    hoverColor: "hover:bg-purple-200",
-    ringColor: "ring-purple-400",
-  },
-];
-
 export default function House({
   currentRoom,
   previousRoom,
@@ -97,109 +30,139 @@ export default function House({
   currentEvent,
   onRoomChange,
 }: HouseProps) {
-  const targetRoom = rooms.find((r) => r.id === currentRoom) || rooms[1];
-  const sourceRoom = previousRoom ? rooms.find((r) => r.id === previousRoom) : null;
   const isError = avatarState === "tired";
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
-      {/* Grid de cômodos */}
-      <div className="grid grid-cols-3 grid-rows-2 gap-4 p-6">
-        {rooms.map((room) => (
-          <RoomCard
-            key={room.id}
-            room={room}
-            isActive={currentRoom === room.id}
-            isError={isError && currentRoom === room.id}
-            onClick={() => onRoomChange?.(room.id)}
-          />
-        ))}
-      </div>
+    <div className="relative w-full h-full min-h-[480px] overflow-hidden rounded-xl bg-[#1a1a2e] p-4">
+      {/* Grid background */}
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{
+          backgroundImage: "linear-gradient(#2a2a3e 1px, transparent 1px), linear-gradient(90deg, #2a2a3e 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
 
-      {/* Avatar overlay with transition */}
-      <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-4 p-6 pointer-events-none">
-        {/* Flash line between rooms during transition */}
-        {isTransitioning && sourceRoom && (
-          <FlashLine from={sourceRoom} to={targetRoom} />
-        )}
-
-        <div
-          className="flex items-center justify-center transition-all duration-700 ease-in-out"
-          style={{
-            gridColumn: targetRoom.col,
-            gridRow: targetRoom.row,
-          }}
-        >
-          <Avatar
-            state={avatarState}
-            isTransitioning={isTransitioning}
-            currentEvent={currentEvent}
-          />
+      {/* Rooms grid */}
+      <div className="relative grid grid-cols-3 grid-rows-2 gap-4 h-full">
+        <div className="col-span-1 row-span-1 h-full">
+          <OfficeRoom isActive={currentRoom === "escritorio"} isError={isError && currentRoom === "escritorio"} />
+        </div>
+        <div className="col-span-1 row-span-1 h-full">
+          <EntranceRoom isActive={currentRoom === "entrada"} isError={isError && currentRoom === "entrada"} />
+        </div>
+        <div className="col-span-1 row-span-1 h-full">
+          <LibraryRoom isActive={currentRoom === "biblioteca"} isError={isError && currentRoom === "biblioteca"} />
+        </div>
+        <div className="col-span-1 row-span-1 h-full">
+          <KitchenRoom isActive={currentRoom === "cozinha"} isError={isError && currentRoom === "cozinha"} />
+        </div>
+        <div className="col-span-1 row-span-1 h-full">
+          <ControlRoom isActive={currentRoom === "sala_de_controle"} isError={isError && currentRoom === "sala_de_controle"} />
+        </div>
+        <div className="col-span-1 row-span-1 h-full">
+          <LabRoom isActive={currentRoom === "laboratorio"} isError={isError && currentRoom === "laboratorio"} />
         </div>
       </div>
+
+      {/* Character overlay - positioned absolutely based on room */}
+      <ClawCharacterOverlay
+        state={avatarState}
+        isTransitioning={isTransitioning}
+        currentRoom={currentRoom as Room}
+        previousRoom={previousRoom as Room | null}
+        currentEvent={currentEvent}
+      />
+
+      {/* Error flash overlay */}
+      {isError && (
+        <div className="absolute inset-0 pointer-events-none animate-pulse bg-red-500/10 rounded-xl" />
+      )}
     </div>
   );
 }
 
-function FlashLine({ from, to }: { from: RoomConfig; to: RoomConfig }) {
-  // Calculate center positions (approximate based on grid)
-  const cellW = 100 / 3;
-  const cellH = 100 / 2;
-  const x1 = (from.col - 0.5) * cellW;
-  const y1 = (from.row - 0.5) * cellH;
-  const x2 = (to.col - 0.5) * cellW;
-  const y2 = (to.row - 0.5) * cellH;
+function ClawCharacterOverlay({
+  state,
+  isTransitioning,
+  currentRoom,
+  previousRoom,
+  currentEvent,
+}: {
+  state: AvatarState;
+  isTransitioning: boolean;
+  currentRoom: Room;
+  previousRoom: Room | null;
+  currentEvent: ActivityEvent | null;
+}) {
+  const [pos, setPos] = useState(getRoomGridPosition(currentRoom));
+  const targetRef = useRef(getRoomGridPosition(currentRoom));
+  const animRef = useRef<number>(0);
 
-  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
-  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+  useEffect(() => {
+    targetRef.current = getRoomGridPosition(currentRoom);
+  }, [currentRoom]);
+
+  // Smooth lerp movement
+  useEffect(() => {
+    const speed = 0.06;
+    const animate = () => {
+      setPos((prev) => {
+        const dx = targetRef.current.x - prev.x;
+        const dy = targetRef.current.y - prev.y;
+        if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) {
+          return targetRef.current;
+        }
+        return {
+          x: prev.x + dx * speed,
+          y: prev.y + dy * speed,
+        };
+      });
+      animRef.current = requestAnimationFrame(animate);
+    };
+    animate();
+    return () => cancelAnimationFrame(animRef.current);
+  }, []);
+
+  // Grid positions (percentages for responsive positioning)
+  // 3 columns, 2 rows with gap-4 (~16px)
+  // Approximate centers:
+  const left = `${pos.x}%`;
+  const top = `${pos.y}%`;
 
   return (
     <div
-      className="absolute animate-flash-line pointer-events-none z-0"
+      className={cn(
+        "absolute pointer-events-none transition-opacity duration-300",
+        isTransitioning ? "opacity-0" : "opacity-100"
+      )}
       style={{
-        left: `${x1}%`,
-        top: `${y1}%`,
-        width: `${length}%`,
-        height: "2px",
-        background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.6), transparent)",
-        transform: `rotate(${angle}deg)`,
-        transformOrigin: "0 50%",
+        left,
+        top,
+        transform: "translate(-50%, -50%)",
+        zIndex: 20,
       }}
-    />
+    >
+      <ClawCharacter
+        state={state}
+        isTransitioning={isTransitioning}
+        currentRoom={currentRoom}
+        previousRoom={previousRoom}
+        currentEvent={currentEvent}
+      />
+    </div>
   );
 }
 
-function RoomCard({
-  room,
-  isActive,
-  isError,
-  onClick,
-}: {
-  room: RoomConfig;
-  isActive: boolean;
-  isError: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={cn(
-        "relative flex flex-col items-center justify-center rounded-2xl p-6 h-40 transition-all duration-500 cursor-pointer border-2",
-        room.bgColor,
-        room.hoverColor,
-        isError && "room-flash-error bg-red-100 border-red-300",
-        isActive && !isError
-          ? `shadow-lg ring-2 ${room.ringColor} border-transparent scale-105`
-          : "border-neutral-200 shadow-sm hover:shadow-md"
-      )}
-    >
-      <span className="text-4xl mb-2">{room.emoji}</span>
-      <span className="font-medium text-sm text-neutral-700">{room.name}</span>
-      {isActive && (
-        <span className="absolute top-2 right-2 text-xs bg-white/80 px-2 py-0.5 rounded-full text-neutral-600 font-medium">
-          Ativo
-        </span>
-      )}
-    </button>
-  );
+function getRoomGridPosition(roomId: Room): { x: number; y: number } {
+  // Percentage positions for 3-col, 2-row grid with padding
+  const positions: Record<Room, { x: number; y: number }> = {
+    escritorio: { x: 16.67, y: 25 },
+    entrada: { x: 50, y: 25 },
+    biblioteca: { x: 83.33, y: 25 },
+    cozinha: { x: 16.67, y: 75 },
+    sala_de_controle: { x: 50, y: 75 },
+    laboratorio: { x: 83.33, y: 75 },
+  };
+  return positions[roomId] || { x: 50, y: 50 };
 }
