@@ -5,7 +5,7 @@ Um narrador enriquece as atividades do agente com linguagem humana, contexto e i
 
 ## Escopo
 - [ ] Sub-agente (ou chamada a modelo) que analisa eventos brutos
-- [ ] Transforma "tool_call: kimi_search" em "Axioma está pesquisando sobre fibrilação atrial para o artigo do Carlos..."
+- [ ] Transforma "tool_call: kimi_search" em "Claw está pesquisando sobre fibrilação atrial para o artigo do Carlos..."
 - [ ] Detecta padrões: "Parece que você está em modo TCC há 3 horas"
 - [ ] Sugestões proativas: "Que tal uma pausa? Você está trabalhando há 2h"
 - [ ] Resumo diário automático (final do dia)
@@ -19,7 +19,7 @@ Opção C: Client-side com modelo leve (Gemini Nano, etc.)
 ```
 Evento bruto: {kind: "tool_call", tool: "kimi_search", query: "ABC Cardiologia"}
 ↓
-Narração: "Axioma está pesquisando sobre a Arquivos Brasileiros de Cardiologia. 
+Narração: "Claw está pesquisando sobre a Arquivos Brasileiros de Cardiologia. 
 Parece que ela está preparando o artigo do TCC para submissão. 
 Ela já leu 3 papers hoje sobre fibrilação atrial."
 ```

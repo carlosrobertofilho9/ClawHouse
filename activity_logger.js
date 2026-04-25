@@ -21,7 +21,7 @@ function ensureDir() {
 function inferRoom(context = {}) {
   const { project, channel, tool, file } = context;
   
-  if (project === 'Axioma' || (file && file.includes('axioma'))) return 'escritorio';
+  if (project === 'Claw' || (file && file.includes('axioma'))) return 'escritorio';
   if (project === 'TCC' || (file && file.includes('TCC'))) return 'biblioteca';
   if (tool === 'feishu_calendar_event' || tool === 'feishu_task_task') return 'sala_de_controle';
   if (channel === 'telegram' && context.bot?.includes('nutri')) return 'cozinha';
@@ -32,7 +32,7 @@ function inferRoom(context = {}) {
 
 // Criar narrativa automática
 function autoNarrative(kind, activity = {}, context = {}) {
-  const actor = context.actor || 'Axioma';
+  const actor = context.actor || 'Claw';
   const room = inferRoom(context);
   
   const narratives = {
