@@ -1,6 +1,6 @@
 "use client";
 
-import House from "@/src/components/House";
+import Scene3D from "@/src/components/3d/Scene3D";
 import ActivityTimeline from "@/src/components/ActivityTimeline";
 import StatusBar from "@/src/components/StatusBar";
 import NarrationBar from "@/src/components/NarrationBar";
@@ -37,12 +37,12 @@ export default function Home() {
       </div>
 
       <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
-        {/* Game Area */}
+        {/* Game Area - 3D Scene */}
         <div className="flex-1 flex flex-col p-4 lg:p-6 overflow-hidden">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-bold text-white">
-                🎮 ClawHouse
+                🎮 ClawHouse 3D
               </h2>
               <p className="text-xs text-neutral-400">
                 Cômodo atual:{" "}
@@ -57,14 +57,15 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1 min-h-0">
-            <House
+            <Scene3D
               currentRoom={currentRoom}
-              previousRoom={previousRoom}
-              isTransitioning={isTransitioning}
               avatarState={avatarState}
               currentEvent={current}
             />
           </div>
+          <p className="text-[10px] text-neutral-600 mt-2 text-center">
+            🖱️ Arraste para rotar • Scroll para zoom • Clique direito para pan
+          </p>
         </div>
 
         {/* Timeline Sidebar */}
