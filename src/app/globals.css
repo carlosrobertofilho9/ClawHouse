@@ -14,3 +14,126 @@
   --color-error: #ef4444;
   --color-idle: #9ca3af;
 }
+
+/* Custom keyframe animations */
+@keyframes jump {
+  0%, 100% { transform: translateY(0) scale(1.1); }
+  50% { transform: translateY(-12px) scale(1.1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0) rotate(3deg); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-4px) rotate(3deg); }
+  20%, 40%, 60%, 80% { transform: translateX(4px) rotate(3deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0.8); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes float-up {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-40px) scale(1); opacity: 0; }
+}
+
+@keyframes particle {
+  0% { transform: translate(0, 0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+}
+
+@keyframes pencil-float {
+  0% { transform: translateY(0) rotate(-10deg); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-30px) rotate(10deg); opacity: 0; }
+}
+
+@keyframes slow-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flash-line {
+  0% { opacity: 0; }
+  50% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Animation utility classes */
+.animate-jump {
+  animation: jump 0.6s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, rgba(255,255,255,0.6) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-ripple {
+  animation: ripple 1.2s ease-out infinite;
+}
+
+.animate-float-up {
+  animation: float-up 2s ease-in-out forwards;
+}
+
+.animate-particle {
+  animation: particle 1.5s ease-out forwards;
+}
+
+.animate-pencil-float {
+  animation: pencil-float 2s ease-in-out forwards;
+}
+
+.animate-slow-spin {
+  animation: slow-spin 4s linear infinite;
+}
+
+.animate-flash-line {
+  animation: flash-line 0.6s ease-in-out;
+}
+
+/* Glow effects */
+.glow-yellow {
+  box-shadow: 0 0 20px rgba(234, 179, 8, 0.5), 0 0 40px rgba(234, 179, 8, 0.2);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+/* Room flash for error */
+.room-flash-error {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-jump,
+  .animate-shake,
+  .animate-shimmer,
+  .animate-ripple,
+  .animate-float-up,
+  .animate-particle,
+  .animate-pencil-float,
+  .animate-slow-spin,
+  .animate-flash-line {
+    animation: none !important;
+  }
+  .transition-all {
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,11 +1,17 @@
 "use client";
 
-import { useState } from "react";
 import { cn } from "@/src/lib/utils";
 import type { Room } from "@/src/lib/mocks";
+import { AvatarState } from "@/src/hooks/useAgentActivity";
+import { ActivityEvent } from "@/src/lib/mocks";
+import Avatar from "./Avatar";
 
 interface HouseProps {
   currentRoom: string;
+  previousRoom: string | null;
+  isTransitioning: boolean;
+  avatarState: AvatarState;
+  currentEvent: ActivityEvent | null;
   onRoomChange?: (room: Room) => void;
 }
 
@@ -83,15 +89,17 @@ const rooms: RoomConfig[] = [
   },
 ];
 
-export default function House({ currentRoom, onRoomChange }: HouseProps) {
-  const [selectedRoom, setSelectedRoom] = useState<Room>(currentRoom as Room);
-
-  const handleRoomClick = (room: Room) => {
-    setSelectedRoom(room);
-    onRoomChange?.(room);
-  };
-
-  const targetRoom = rooms.find((r) => r.id === selectedRoom) || rooms[1];
+export default function House({
+  currentRoom,
+  previousRoom,
+  isTransitioning,
+  avatarState,
+  currentEvent,
+  onRoomChange,
+}: HouseProps) {
+  const targetRoom = rooms.find((r) => r.id === currentRoom) || rooms[1];
+  const sourceRoom = previousRoom ? rooms.find((r) => r.id === previousRoom) : null;
+  const isError = avatarState === "tired";
 
   return (
     <div className="relative w-full max-w-2xl mx-auto">
@@ -102,14 +110,19 @@ export default function House({ currentRoom, onRoomChange }: HouseProps) {
             key={room.id}
             room={room}
             isActive={currentRoom === room.id}
-            isSelected={selectedRoom === room.id}
-            onClick={() => handleRoomClick(room.id)}
+            isError={isError && currentRoom === room.id}
+            onClick={() => onRoomChange?.(room.id)}
           />
         ))}
       </div>
 
-      {/* Avatar — posicionado via grid overlay */}
+      {/* Avatar overlay with transition */}
       <div className="absolute inset-0 grid grid-cols-3 grid-rows-2 gap-4 p-6 pointer-events-none">
+        {/* Flash line between rooms during transition */}
+        {isTransitioning && sourceRoom && (
+          <FlashLine from={sourceRoom} to={targetRoom} />
+        )}
+
         <div
           className="flex items-center justify-center transition-all duration-700 ease-in-out"
           style={{
@@ -117,24 +130,54 @@ export default function House({ currentRoom, onRoomChange }: HouseProps) {
             gridRow: targetRoom.row,
           }}
         >
-          <div className="w-12 h-12 bg-white rounded-full shadow-xl border-2 border-neutral-900 flex items-center justify-center text-2xl z-10">
-            🐾
-          </div>
+          <Avatar
+            state={avatarState}
+            isTransitioning={isTransitioning}
+            currentEvent={currentEvent}
+          />
         </div>
       </div>
     </div>
   );
 }
 
+function FlashLine({ from, to }: { from: RoomConfig; to: RoomConfig }) {
+  // Calculate center positions (approximate based on grid)
+  const cellW = 100 / 3;
+  const cellH = 100 / 2;
+  const x1 = (from.col - 0.5) * cellW;
+  const y1 = (from.row - 0.5) * cellH;
+  const x2 = (to.col - 0.5) * cellW;
+  const y2 = (to.row - 0.5) * cellH;
+
+  const length = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  const angle = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+
+  return (
+    <div
+      className="absolute animate-flash-line pointer-events-none z-0"
+      style={{
+        left: `${x1}%`,
+        top: `${y1}%`,
+        width: `${length}%`,
+        height: "2px",
+        background: "linear-gradient(90deg, transparent, rgba(59,130,246,0.6), transparent)",
+        transform: `rotate(${angle}deg)`,
+        transformOrigin: "0 50%",
+      }}
+    />
+  );
+}
+
 function RoomCard({
   room,
   isActive,
-  isSelected,
+  isError,
   onClick,
 }: {
   room: RoomConfig;
   isActive: boolean;
-  isSelected: boolean;
+  isError: boolean;
   onClick: () => void;
 }) {
   return (
@@ -144,7 +187,8 @@ function RoomCard({
         "relative flex flex-col items-center justify-center rounded-2xl p-6 h-40 transition-all duration-500 cursor-pointer border-2",
         room.bgColor,
         room.hoverColor,
-        isActive || isSelected
+        isError && "room-flash-error bg-red-100 border-red-300",
+        isActive && !isError
           ? `shadow-lg ring-2 ${room.ringColor} border-transparent scale-105`
           : "border-neutral-200 shadow-sm hover:shadow-md"
       )}

@@ -3,6 +3,7 @@ export type ActivityKind =
   | "thinking"
   | "tool_call"
   | "file_edit"
+  | "file_read"
   | "web_search"
   | "message_sent"
   | "session_end"
@@ -144,6 +145,14 @@ export const mockEvents: ActivityEvent[] = [
     activity: { kind: "file_edit", file: "docs/TCC.md", lines_added: 120 },
     context: { channel: "kimi-claw", room: "escritorio" },
     narrative: "Claw atualizou o documento do TCC",
+  },
+  {
+    timestamp: offset(30),
+    session_id: "sess_004",
+    actor: "axioma_main",
+    activity: { kind: "file_read", file: "docs/plano.md" },
+    context: { channel: "kimi-claw", room: "biblioteca" },
+    narrative: "Claw está lendo o plano de estudos",
   },
   {
     timestamp: offset(32),

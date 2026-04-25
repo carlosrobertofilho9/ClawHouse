@@ -20,6 +20,7 @@ const kindConfig: Record<
   tool_call: { icon: <Wrench className="w-4 h-4" />, label: "Ferramenta", variant: "toolcall" },
   web_search: { icon: <Search className="w-4 h-4" />, label: "Busca", variant: "toolcall" },
   file_edit: { icon: <FileEdit className="w-4 h-4" />, label: "Edição", variant: "toolcall" },
+  file_read: { icon: <FileEdit className="w-4 h-4" />, label: "Leitura", variant: "toolcall" },
   message_sent: { icon: <Send className="w-4 h-4" />, label: "Mensagem", variant: "messagesent" },
   error: { icon: <AlertCircle className="w-4 h-4" />, label: "Erro", variant: "error" },
   idle: { icon: <Clock className="w-4 h-4" />, label: "Idle", variant: "idle" },
