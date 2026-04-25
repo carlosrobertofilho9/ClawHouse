@@ -1,0 +1,9 @@
+# ClawHouse
+
+.env.local
+node_modules/
+.next/
+out/
+*.log
+.vercel
+.DS_Store

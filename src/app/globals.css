@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-entrance: #f3f4f6;
+  --color-office: #dbeafe;
+  --color-library: #fef3c7;
+  --color-kitchen: #dcfce7;
+  --color-lab: #f3e8ff;
+  --color-control: #fee2e2;
+  
+  --color-thinking: #3b82f6;
+  --color-toolcall: #eab308;
+  --color-messagesent: #22c55e;
+  --color-error: #ef4444;
+  --color-idle: #9ca3af;
+}
